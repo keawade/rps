@@ -11,6 +11,8 @@ RUN deno cache deps.ts
 
 ADD . .
 
+RUN find . -type f
+
 RUN deno cache main.ts
 
-CMD ["run", "--allow-net", "main.ts"]
+CMD ["run", "--allow-net", "--allow-env", "--allow-read", "main.ts"]
