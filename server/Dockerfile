@@ -1,18 +1,20 @@
-FROM hayd/alpine-deno:1.8.2
-
-EXPOSE 8080
+FROM node:14.16.0-alpine as build
 
 WORKDIR /app
 
-USER deno
+COPY package.json ./
+COPY package-lock.json ./
 
-COPY deps.ts .
-RUN deno cache deps.ts
+RUN npm ci
 
 COPY . .
 
-RUN find . -type f
+RUN npm run build
 
-RUN deno cache main.ts
+RUN find . -path ./node_modules -type f
 
-CMD ["run", "--allow-net", "--allow-env", "--allow-read", "main.ts"]
+USER node
+EXPOSE 3000
+
+CMD ["node", "build/server.js"]
+

@@ -1,22 +1,9 @@
 services:
   server:
-    container_name: server
-    build:
-      context: server
-      dockerfile: Dockerfile
+    build: ./server
     ports:
       - 3000:3000
-    env_file:
-      - server/.env
   client:
-    container_name: client
-    build:
-      context: client
-      dockerfile: Dockerfile
-    volumes:
-      - ./client:/app
-      - ./client/node_modules:/app/node_modules
+    build: ./client
     ports:
-      - 8080:3000
-    environment:
-      - CHOKIDAR_USEPOLLING=true
+      - 8080:80
